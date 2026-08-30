@@ -1,0 +1,41 @@
+{
+  "name": "college-dating-bot",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/main.ts",
+    "start:cron": "bun run src/cron/main.ts",
+    "dev": "bun --watch src/main.ts",
+    "build": "bun build src/main.ts --target bun --outdir dist && bun build src/cron/main.ts --target bun --outdir dist/cron",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "bun run src/database/migrate.ts",
+    "db:push": "drizzle-kit push"
+  },
+  "dependencies": {
+    "drizzle-orm": "0.36.4",
+    "grammy": "1.30.0",
+    "ioredis": "5.4.1",
+    "node-cron": "3.0.3",
+    "pino": "9.5.0",
+    "pino-roll": "2.0.0",
+    "postgres": "3.4.5",
+    "reflect-metadata": "0.2.2",
+    "tsyringe": "4.8.0",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@types/bun": "1.1.13",
+    "@types/node-cron": "3.0.11",
+    "@typescript-eslint/eslint-plugin": "8.15.0",
+    "@typescript-eslint/parser": "8.15.0",
+    "drizzle-kit": "0.28.1",
+    "eslint": "8.57.1",
+    "prettier": "3.3.3",
+    "typescript": "5.6.3"
+  }
+}
