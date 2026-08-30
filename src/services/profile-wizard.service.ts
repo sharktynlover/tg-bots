@@ -1,6 +1,6 @@
 import { singleton } from 'tsyringe';
 import type { Gender, SearchPreference } from '@/entities';
-import { formatGroupList, resolveGroup } from '@/constants/groups';
+import { resolveGroup } from '@/constants/groups';
 import { CreateProfileSchema } from '@/dto/profile.dto';
 import {
   genderKeyboard,
@@ -88,9 +88,7 @@ export class ProfileWizardService {
         });
         break;
       case 'groupName':
-        await ctx.reply(render(MESSAGES.PROFILE.ASK_GROUP, { groups: formatGroupList() }), {
-          reply_markup: cancelKeyboard(),
-        });
+        await ctx.reply(MESSAGES.PROFILE.ASK_GROUP, { reply_markup: cancelKeyboard() });
         break;
       case 'gender':
         await ctx.reply(MESSAGES.PROFILE.ASK_GENDER, { reply_markup: genderKeyboard() });
@@ -203,7 +201,7 @@ export class ProfileWizardService {
       case 'groupName': {
         const group = text ? resolveGroup(text) : null;
         if (!group) {
-          await ctx.reply(render(MESSAGES.PROFILE.INVALID_GROUP, { groups: formatGroupList() }));
+          await ctx.reply(MESSAGES.PROFILE.INVALID_GROUP);
           return false;
         }
         draft.groupName = group;

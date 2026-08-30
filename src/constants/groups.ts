@@ -81,6 +81,9 @@ export const GROUPS: Record<string, Record<string, string>> = {
     'Рм-408': 'rm-408',
     'Рм-409': 'rm-409',
   },
+  pg: {
+    'Пг-169': 'pg-169',
+  },
   re: {
     'Рэ-108': 're-108',
     'Рэ-109': 're-109',
@@ -124,11 +127,4 @@ for (const faculty of Object.values(GROUPS)) {
 /** Returns the canonical group name for user input, or null when unknown. */
 export function resolveGroup(input: string): string | null {
   return GROUP_BY_KEY.get(normalizeKey(input)) ?? null;
-}
-
-/** Group names joined per faculty, one faculty per line. */
-export function formatGroupList(): string {
-  return Object.values(GROUPS)
-    .map((faculty) => Object.keys(faculty).join(', '))
-    .join('\n');
 }
