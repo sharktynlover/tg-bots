@@ -1,0 +1,17 @@
+{
+	"name": "@college/bot-gateway",
+	"version": "1.0.0",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"dev": "bun run --watch src/main.ts",
+		"start": "bun run src/main.ts"
+	},
+	"dependencies": {
+		"@college/shared": "workspace:*",
+		"grammy": "^1.33.0",
+		"ical-generator": "^8.0.1",
+		"reflect-metadata": "^0.2.2",
+		"tsyringe": "^4.8.0"
+	}
+}
