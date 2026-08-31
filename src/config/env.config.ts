@@ -15,6 +15,8 @@ const envSchema = z.object({
   TELEGRAM_BOT_TOKEN: z.string().min(1),
   TELEGRAM_WEBHOOK_URL: z.string().url().optional().or(z.literal('')),
   TELEGRAM_WEBHOOK_SECRET: z.string().optional(),
+  TELEGRAM_API_ROOT: z.string().url().optional().or(z.literal('')),
+  TELEGRAM_PROXY_URL: z.string().url().optional().or(z.literal('')),
 
   DATABASE_URL: z.string().min(1),
   DATABASE_POOL_SIZE: z.coerce.number().int().positive().default(20),

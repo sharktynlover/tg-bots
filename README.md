@@ -31,6 +31,10 @@ bun run typecheck && bun run lint
 Если задан `TELEGRAM_WEBHOOK_URL`, бот стартует в режиме webhook и слушает
 `POST /webhook` (+ `GET /health`) на `PORT`; иначе используется long polling.
 
+Если с сервера нет прямого доступа к `api.telegram.org`, задайте `TELEGRAM_PROXY_URL`
+(например `http://user:pass@host:port`) или `TELEGRAM_API_ROOT` для собственного
+Bot API server.
+
 ## Структура
 
 ```
