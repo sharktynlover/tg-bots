@@ -164,7 +164,28 @@ pm2 save && pm2 startup       # автозапуск после перезагр
 Полезное: `pm2 restart dating-bot`, `pm2 stop all`, `pm2 status`. После `git pull`
 достаточно `bun install && pm2 restart all`.
 
-## 8. После первого запуска
+## 8. Если процессор без AVX2
+
+Bun 1.2+ требует AVX2 и на старых/виртуальных CPU (например `QEMU Virtual CPU`)
+зависает при первом же импорте пакета, не выдавая ошибки. Проверка:
+
+```bash
+grep -m1 -o avx2 /proc/cpuinfo || echo "AVX2 нет"
+```
+
+Если AVX2 нет — поставьте последнюю версию с baseline-сборкой:
+
+```bash
+curl -fsSL https://bun.sh/install | bash -s "bun-v1.1.38"
+export PATH="$HOME/.bun/bin:$PATH"
+bun --version        # 1.1.38
+rm -f bun.lock && bun install
+```
+
+Запускать бота в этом случае нужно на хосте через pm2 (раздел 7): официальный
+образ `oven/bun:1.4-alpine` на таком CPU так же зависает.
+
+## 9. После первого запуска
 
 Напишите боту `/start` и заполните анкету. Админ-команды: `/admin`, `/stats`,
 `/reports`, `/ban`, `/unban`; разработчику дополнительно `/config` (лимиты на лету),
