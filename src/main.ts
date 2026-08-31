@@ -5,6 +5,7 @@ import { env, isWebhookMode } from '@/config/env.config';
 import { redis } from '@/config/redis.config';
 import { sql } from '@/config/database.config';
 import { CONTROLLERS } from '@/controllers';
+import { runMigrations } from '@/database/migrate';
 import { configureContainer } from '@/core/container';
 import { registerControllers } from '@/core/router';
 import { AuthMiddleware } from '@/middlewares/auth.middleware';
@@ -24,6 +25,8 @@ const BOT_COMMANDS = [
 ];
 
 async function bootstrap(): Promise<void> {
+  await runMigrations();
+
   const di = configureContainer();
 
   bot.use(di.resolve(RateLimitMiddleware).handler());

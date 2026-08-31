@@ -10,7 +10,6 @@
         "ioredis": "5.4.1",
         "node-cron": "3.0.3",
         "pino": "9.5.0",
-        "pino-roll": "2.0.0",
         "postgres": "3.4.5",
         "reflect-metadata": "0.2.2",
         "tsyringe": "4.8.0",
@@ -324,8 +323,6 @@
     "pino": ["pino@9.5.0", "", { "dependencies": { "atomic-sleep": "^1.0.0", "fast-redact": "^3.1.1", "on-exit-leak-free": "^2.1.0", "pino-abstract-transport": "^2.0.0", "pino-std-serializers": "^7.0.0", "process-warning": "^4.0.0", "quick-format-unescaped": "^4.0.3", "real-require": "^0.2.0", "safe-stable-stringify": "^2.3.1", "sonic-boom": "^4.0.1", "thread-stream": "^3.0.0" }, "bin": { "pino": "bin.js" } }, "sha512-xSEmD4pLnV54t0NOUN16yCl7RIB1c5UUOse5HSyEXtBp+FgFQyPeDutc+Q2ZO7/22vImV7VfEjH/1zV2QuqvYw=="],
 
     "pino-abstract-transport": ["pino-abstract-transport@2.0.0", "", { "dependencies": { "split2": "^4.0.0" } }, "sha512-F63x5tizV6WCh4R6RHyi2Ml+M70DNRXt/+HANowMflpgGFMAym/VKm6G7ZOQRjqN7XbGxK1Lg9t6ZrtzOaivMw=="],
-
-    "pino-roll": ["pino-roll@2.0.0", "", { "dependencies": { "sonic-boom": "^4.0.1" } }, "sha512-XndKWE/HJjqnZHBqmasBirTBBU9mOhEhy41Fs7HLD/rukfwT012okrtp1VaBJt8zYNjRppvNFEXuC76lmMFKGA=="],
 
     "pino-std-serializers": ["pino-std-serializers@7.1.0", "", {}, "sha512-BndPH67/JxGExRgiX1dX0w1FvZck5Wa4aal9198SrRhZjH3GxKQUKIBnYJTdj2HDN3UQAS06HlfcSbQj2OHmaw=="],
 

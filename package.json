@@ -22,7 +22,6 @@
     "ioredis": "5.4.1",
     "node-cron": "3.0.3",
     "pino": "9.5.0",
-    "pino-roll": "2.0.0",
     "postgres": "3.4.5",
     "reflect-metadata": "0.2.2",
     "tsyringe": "4.8.0",

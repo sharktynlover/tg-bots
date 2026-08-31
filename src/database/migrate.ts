@@ -6,7 +6,7 @@ import { logger } from '@/utils/logger';
 
 const MIGRATIONS_FOLDER = 'src/database/migrations';
 
-async function main(): Promise<void> {
+export async function runMigrations(): Promise<void> {
   const client = postgres(env.DATABASE_URL, { max: 1, onnotice: () => undefined });
   try {
     await migrate(drizzle(client), { migrationsFolder: MIGRATIONS_FOLDER });
@@ -16,7 +16,9 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((error: unknown) => {
-  logger.error({ event: 'migrations_failed', error: String(error) }, 'migrations failed');
-  process.exit(1);
-});
+if (import.meta.main) {
+  runMigrations().catch((error: unknown) => {
+    logger.error({ event: 'migrations_failed', error: String(error) }, 'migrations failed');
+    process.exit(1);
+  });
+}
