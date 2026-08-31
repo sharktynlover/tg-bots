@@ -4,7 +4,9 @@ import pino from 'pino';
 import { env } from '@/config/env.config';
 
 function buildLogger(service: string): pino.Logger {
-  const streams: pino.StreamEntry[] = [{ level: env.LOG_LEVEL, stream: pino.destination(1) }];
+  const streams: pino.StreamEntry[] = [
+    { level: env.LOG_LEVEL, stream: pino.destination({ dest: 1, sync: true }) },
+  ];
 
   try {
     mkdirSync(dirname(env.LOG_FILE_PATH), { recursive: true });
