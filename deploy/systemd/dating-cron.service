@@ -1,0 +1,18 @@
+[Unit]
+Description=College dating bot cron worker
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root/date
+Environment=SERVICE_NAME=cron-service
+Environment=LOG_FILE_PATH=/root/date/logs/cron.log
+ExecStart=/root/.bun/bin/bun run src/cron/main.ts
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -185,7 +185,24 @@ rm -f bun.lock && bun install
 Запускать бота в этом случае нужно на хосте через pm2 (раздел 7): официальный
 образ `oven/bun:1.4-alpine` на таком CPU так же зависает.
 
-## 9. После первого запуска
+## 9. Автозапуск через systemd (надёжнее pm2)
+
+Юниты лежат в `deploy/systemd` и рассчитаны на каталог `/root/date` и Bun в
+`/root/.bun/bin/bun` (иначе поправьте `WorkingDirectory` и `ExecStart`).
+
+```bash
+cd ~/date
+cp deploy/systemd/dating-bot.service deploy/systemd/dating-cron.service /etc/systemd/system/
+systemctl daemon-reload
+systemctl enable --now dating-bot dating-cron
+systemctl status dating-bot --no-pager
+journalctl -u dating-bot -f
+```
+
+Полезное: `systemctl restart dating-bot`, `journalctl -u dating-bot -n 100 --no-pager`.
+После `git pull` — `bun install && systemctl restart dating-bot dating-cron`.
+
+## 10. После первого запуска
 
 Напишите боту `/start` и заполните анкету. Админ-команды: `/admin`, `/stats`,
 `/reports`, `/ban`, `/unban`; разработчику дополнительно `/config` (лимиты на лету),
