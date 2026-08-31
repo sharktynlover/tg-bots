@@ -1,0 +1,16 @@
+[Unit]
+Description=College schedule service (cron worker)
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root/rasp
+ExecStart=/root/.bun/bin/bun run apps/schedule-service/src/main.ts
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
