@@ -129,7 +129,42 @@ docker compose down          # остановить
   `5432` и `6379` у баз). Если наружу они не нужны, блоки `ports` у `postgres` и
   `redis` можно убрать — внутри compose-сети сервисы видят друг друга и без них.
 
-## 7. После первого запуска
+## 7. Альтернатива Docker: pm2 на хосте
+
+Если бот в Docker не стартует, можно запустить его напрямую через Bun и pm2, а
+базы оставить в контейнерах.
+
+```bash
+docker compose up -d postgres redis        # только базы
+curl -fsSL https://bun.sh/install | bash   # Bun на хост
+source ~/.bashrc
+apt install -y nodejs npm && npm i -g pm2
+
+cd ~/date
+bun install
+```
+
+В `.env` заменить хосты на локальные (вне Docker имена сервисов не резолвятся):
+
+```dotenv
+DATABASE_URL=postgresql://ПОЛЬЗОВАТЕЛЬ:ПАРОЛЬ@127.0.0.1:5432/dating_db
+REDIS_URL=redis://127.0.0.1:6379
+LOG_FILE_PATH=./logs/bot.log
+```
+
+Запуск:
+
+```bash
+bun run db:migrate
+pm2 start ecosystem.config.cjs
+pm2 logs dating-bot
+pm2 save && pm2 startup       # автозапуск после перезагрузки
+```
+
+Полезное: `pm2 restart dating-bot`, `pm2 stop all`, `pm2 status`. После `git pull`
+достаточно `bun install && pm2 restart all`.
+
+## 8. После первого запуска
 
 Напишите боту `/start` и заполните анкету. Админ-команды: `/admin`, `/stats`,
 `/reports`, `/ban`, `/unban`; разработчику дополнительно `/config` (лимиты на лету),
