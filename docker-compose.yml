@@ -1,0 +1,78 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: college
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      retries: 10
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    healthcheck:
+      test: ['CMD', 'rabbitmq-diagnostics', '-q', 'ping']
+      interval: 10s
+      retries: 10
+
+  migrate:
+    build: .
+    command: ['bun', 'run', 'packages/shared/src/db/migrate.ts']
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/college
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  bot-gateway:
+    build: .
+    command: ['bun', 'run', 'apps/bot-gateway/src/main.ts']
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/college
+      REDIS_URL: redis://redis:6379
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+    restart: unless-stopped
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  schedule-service:
+    build: .
+    command: ['bun', 'run', 'apps/schedule-service/src/main.ts']
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/college
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+    restart: unless-stopped
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      rabbitmq:
+        condition: service_healthy
+
+volumes:
+  pgdata:

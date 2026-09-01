@@ -1,0 +1,16 @@
+{
+	"name": "@college/schedule-service",
+	"version": "1.0.0",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"dev": "bun run --watch src/main.ts",
+		"start": "bun run src/main.ts"
+	},
+	"dependencies": {
+		"@college/shared": "workspace:*",
+		"node-cron": "^3.0.3",
+		"reflect-metadata": "^0.2.2",
+		"tsyringe": "^4.8.0"
+	}
+}
