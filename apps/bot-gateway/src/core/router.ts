@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 import type { Bot, Context } from 'grammy';
 import { getHandlers } from './decorators';
 import { Admin, Common } from '../messages';
+import { AccessService } from '../services/access.service';
 
 const log = createLogger('router');
 
@@ -11,11 +12,20 @@ type Controller = new (...args: any[]) => object;
 
 type Handler = (ctx: Context) => Promise<unknown>;
 
-function guard(name: string, adminOnly: boolean, run: Handler): Handler {
+function guard(name: string, adminOnly: boolean, access: string | undefined, run: Handler): Handler {
 	return async (ctx) => {
 		if (adminOnly && !env.adminIds.includes(ctx.from?.id ?? 0)) {
 			await ctx.reply(Admin.denied());
 			return;
+		}
+		if (access) {
+			const allowed = await container
+				.resolve(AccessService)
+				.isAllowed(access, ctx.from?.id ?? 0);
+			if (!allowed) {
+				await ctx.reply(Admin.denied());
+				return;
+			}
 		}
 		try {
 			await run(ctx);
@@ -39,6 +49,7 @@ export function registerControllers(bot: Bot, controllers: Controller[]): void {
 			const run = guard(
 				`${controller.name}.${meta.method}`,
 				meta.adminOnly,
+				meta.access,
 				(ctx) => instance[meta.method]!.call(instance, ctx) as Promise<unknown>,
 			);
 			switch (meta.kind) {

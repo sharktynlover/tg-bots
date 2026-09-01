@@ -1,4 +1,13 @@
-import { bigint, integer, jsonb, pgTable, serial, timestamp, varchar } from 'drizzle-orm/pg-core';
+import {
+	bigint,
+	integer,
+	jsonb,
+	pgTable,
+	primaryKey,
+	serial,
+	timestamp,
+	varchar,
+} from 'drizzle-orm/pg-core';
 import type { Lesson, ScheduleFormat, WeekSchedule } from '../types';
 
 export const users = pgTable('users', {
@@ -30,7 +39,20 @@ export const preScheduleCache = pgTable('pre_schedule_cache', {
 	lastUpdated: timestamp('last_updated', { withTimezone: true }).notNull().defaultNow(),
 });
 
+/** Точечный доступ к командам вне ADMIN_IDS: одна строка — один пользователь на одну команду. */
+export const commandAccess = pgTable(
+	'command_access',
+	{
+		command: varchar('command', { length: 32 }).notNull(),
+		telegramId: bigint('telegram_id', { mode: 'number' }).notNull(),
+		grantedBy: bigint('granted_by', { mode: 'number' }),
+		createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+	},
+	(table) => [primaryKey({ columns: [table.command, table.telegramId] })],
+);
+
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 export type ScheduleCacheRow = typeof scheduleCache.$inferSelect;
 export type PreScheduleCacheRow = typeof preScheduleCache.$inferSelect;
+export type CommandAccessRow = typeof commandAccess.$inferSelect;

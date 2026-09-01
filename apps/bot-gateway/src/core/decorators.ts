@@ -10,6 +10,8 @@ export interface HandlerMeta {
 	trigger: string | RegExp;
 	method: string;
 	adminOnly: boolean;
+	/** Имя команды в `command_access`, если доступ выдаётся поштучно. */
+	access?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,9 +35,14 @@ export function Controller(): ClassDecorator {
 	};
 }
 
-function handler(kind: HandlerKind, trigger: string | RegExp, adminOnly = false): MethodDecorator {
+function handler(
+	kind: HandlerKind,
+	trigger: string | RegExp,
+	adminOnly = false,
+	access?: string,
+): MethodDecorator {
 	return (target, propertyKey) => {
-		push(target as object, { kind, trigger, method: String(propertyKey), adminOnly });
+		push(target as object, { kind, trigger, method: String(propertyKey), adminOnly, access });
 	};
 }
 
@@ -47,6 +54,11 @@ export function Command(name: string): MethodDecorator {
 /** `/command`, доступная только Telegram id из ADMIN_IDS. */
 export function AdminCommand(name: string): MethodDecorator {
 	return handler('command', name, true);
+}
+
+/** `/command` для админов и пользователей с выданным доступом. */
+export function RestrictedCommand(name: string): MethodDecorator {
+	return handler('command', name, false, name);
 }
 
 /** Нажатие кнопки Reply-клавиатуры. */

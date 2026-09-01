@@ -9,6 +9,7 @@ import { FeedbackController } from './controllers/feedback.controller';
 import { NavigationController } from './controllers/navigation.controller';
 import { NextController } from './controllers/next.controller';
 import { RegistrationController } from './controllers/registration.controller';
+import { RovController } from './controllers/rov.controller';
 import { ScheduleController } from './controllers/schedule.controller';
 import { SettingsController } from './controllers/settings.controller';
 import { TextController } from './controllers/text.controller';
@@ -28,6 +29,7 @@ registerControllers(bot, [
 	ExportController,
 	FeedbackController,
 	AdminController,
+	RovController,
 	TextController,
 ]);
 

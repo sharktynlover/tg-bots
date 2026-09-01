@@ -7,6 +7,8 @@ export const Admin = {
 			'/stats — статистика',
 			'/broadcast текст — рассылка всем',
 			'/broadcast group is-231,is-232 текст — рассылка по группам',
+			'/rov — «Разговоры о важном» по всем группам',
+			'/rov_access — кому доступна /rov (add/del id)',
 		].join('\n'),
 	stats: (users: number, groups: number, reminders: number) =>
 		[

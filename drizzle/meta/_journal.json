@@ -8,6 +8,13 @@
       "when": 1788116435914,
       "tag": "0000_nebulous_the_phantom",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1788256374853,
+      "tag": "0001_gigantic_supreme_intelligence",
+      "breakpoints": true
     }
   ]
 }
