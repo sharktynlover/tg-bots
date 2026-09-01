@@ -49,6 +49,15 @@ export interface Lesson {
 	groupTitle: string | null;
 	classroomId: number | null;
 	classroomName: string | null;
+	/** Другие группы, у которых эта же пара с тем же преподавателем в это же время. */
+	sharedWith?: SharedGroup[];
+}
+
+/** `combined` — тот же кабинет (совмещённая), `parallel` — разные кабинеты. */
+export interface SharedGroup {
+	groupApiId: string;
+	groupTitle: string;
+	mode: 'combined' | 'parallel';
 }
 
 export interface ScheduleDay {
@@ -65,10 +74,18 @@ export interface WeekSchedule {
 
 export type ScheduleFormat = 'detailed' | 'compact';
 
+/** Конкретное изменение в расписании группы. */
+export type ScheduleChange =
+	| { kind: 'added'; after: Lesson; before?: undefined }
+	| { kind: 'cancelled'; before: Lesson; after?: undefined }
+	| { kind: 'moved'; before: Lesson; after: Lesson }
+	| { kind: 'changed'; before: Lesson; after: Lesson };
+
 export interface NotificationEvent {
 	groupApiId: string;
 	weekStart: string;
 	kind: 'schedule' | 'preschedule';
+	changes?: ScheduleChange[];
 }
 
 export interface ReminderEvent {

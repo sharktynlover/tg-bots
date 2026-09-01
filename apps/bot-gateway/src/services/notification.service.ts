@@ -22,7 +22,9 @@ export class NotificationService {
 	async onScheduleEvent(event: NotificationEvent): Promise<void> {
 		const title = GroupTitleById[event.groupApiId] ?? event.groupApiId;
 		const text =
-			event.kind === 'preschedule' ? Schedule.prescheduleReady(title) : Schedule.changed(title);
+			event.kind === 'preschedule'
+				? Schedule.prescheduleReady(title)
+				: Schedule.changed(title, event.changes ?? []);
 		const recipients = await this.users.findByGroup(event.groupApiId);
 		await this.send(
 			recipients.map((user) => user.telegramId),

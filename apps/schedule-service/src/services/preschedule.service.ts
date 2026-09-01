@@ -1,6 +1,7 @@
 import { eq, sql } from 'drizzle-orm';
 import { singleton } from 'tsyringe';
 import {
+	annotateLessons,
 	countLessons,
 	createLogger,
 	fetchGroupWeek,
@@ -38,7 +39,7 @@ export class PreScheduleService {
 		const groups = await this.parser.activeGroups();
 		if (groups.length === 0) return;
 
-		const lessonsByGroup = await this.collectTeacherLessons(weekStart);
+		const { byGroup: lessonsByGroup, all } = await this.collectTeacherLessons(weekStart);
 		log.info('Собраны данные преподавателей', {
 			weekStart: weekStart.toISOString(),
 			groups: lessonsByGroup.size,
@@ -48,7 +49,7 @@ export class PreScheduleService {
 			const lessons = lessonsByGroup.get(groupApiId);
 			if (!lessons?.length) continue;
 			if (await this.isPublished(groupApiId, weekStart)) continue;
-			await this.store(groupApiId, weekStart, lessons);
+			await this.store(groupApiId, weekStart, annotateLessons(lessons, groupApiId, all));
 		}
 	}
 
@@ -120,8 +121,11 @@ export class PreScheduleService {
 	}
 
 	/** Уроки всех преподавателей за неделю, сгруппированные по группам. */
-	private async collectTeacherLessons(weekStart: Date): Promise<Map<string, Lesson[]>> {
+	private async collectTeacherLessons(
+		weekStart: Date,
+	): Promise<{ byGroup: Map<string, Lesson[]>; all: Lesson[] }> {
 		const result = new Map<string, Lesson[]>();
+		const all: Lesson[] = [];
 		const ids = TeacherList.map(([, id]) => id);
 
 		for (let offset = 0; offset < ids.length; offset += CONCURRENCY) {
@@ -144,6 +148,7 @@ export class PreScheduleService {
 				for (const day of week.days) {
 					for (const lesson of day.lessons) {
 						if (!lesson.groupId) continue;
+						all.push(lesson);
 						const bucket = result.get(lesson.groupId) ?? [];
 						bucket.push(lesson);
 						result.set(lesson.groupId, bucket);
@@ -152,6 +157,6 @@ export class PreScheduleService {
 			}
 		}
 
-		return result;
+		return { byGroup: result, all };
 	}
 }

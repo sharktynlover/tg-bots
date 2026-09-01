@@ -7,6 +7,8 @@ export * from './config/classrooms';
 export * from './db/client';
 export * from './db/schema';
 export * from './mq/index';
+export * from './utils/diff';
 export * from './utils/hash';
+export * from './utils/shared-lessons';
 export * from './utils/logger';
 export * from './utils/time';

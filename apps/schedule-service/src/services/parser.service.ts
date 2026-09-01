@@ -2,6 +2,7 @@ import { eq, isNotNull, sql } from 'drizzle-orm';
 import { singleton } from 'tsyringe';
 import {
 	createLogger,
+	diffWeeks,
 	fetchGroupWeek,
 	getDb,
 	getWeekStart,
@@ -12,12 +13,15 @@ import {
 	toErrorMeta,
 	type WeekSchedule,
 } from '@college/shared';
+import { SharedLessonsService } from './shared-lessons.service';
 
 const log = createLogger('parser');
 
 @singleton()
 export class ParserService {
 	private readonly db = getDb();
+
+	constructor(private readonly sharedLessons: SharedLessonsService) {}
 
 	/** Группы, за которыми есть смысл следить: у них есть подписчики. */
 	async activeGroups(): Promise<string[]> {
@@ -52,22 +56,28 @@ export class ParserService {
 
 		if (cached?.rawDataHash === hash) return false;
 
+		const annotated = await this.sharedLessons.annotate(week, groupApiId);
+
 		await this.db
 			.insert(schema.scheduleCache)
-			.values({ groupApiId, rawDataHash: hash, parsedData: week })
+			.values({ groupApiId, rawDataHash: hash, parsedData: annotated })
 			.onConflictDoUpdate({
 				target: schema.scheduleCache.groupApiId,
-				set: { rawDataHash: hash, parsedData: week, lastUpdated: sql`now()` },
+				set: { rawDataHash: hash, parsedData: annotated, lastUpdated: sql`now()` },
 			});
 
 		const isNewWeek = cached?.parsedData.weekStart !== week.weekStart;
 		if (!cached || isNewWeek) return false;
 
-		log.info('Расписание изменилось', { groupApiId });
+		const changes = diffWeeks(cached.parsedData, annotated);
+		if (changes.length === 0) return false;
+
+		log.info('Расписание изменилось', { groupApiId, changes: changes.length });
 		await publish(Queues.notifications, {
 			groupApiId,
 			weekStart: week.weekStart,
 			kind: 'schedule',
+			changes,
 		});
 		return true;
 	}
