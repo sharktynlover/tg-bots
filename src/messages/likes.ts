@@ -1,0 +1,15 @@
+export const LIKES = {
+  LIKE_SENT: 'Лайк отправлен ❤️',
+  SUPERLIKE_SENT: 'Суперлайк отправлен ⭐',
+  SKIPPED: 'Пропущено ⏭️',
+  ALREADY_LIKED: 'Вы уже лайкали этого человека.',
+  LIKE_RECEIVED: '❤️ Вас лайкнул(а) {name}!',
+  SUPER_LIKE_RECEIVED: '⭐ Вас суперлайкнул(а) {name}!',
+  MUTUAL_LIKE: '🎉 Взаимный лайк! Пишите: @{username}',
+  MUTUAL_LIKE_NO_USERNAME: '🎉 Взаимный лайк! Но у пользователя нет username в Telegram.',
+  COUNTER: 'Вас лайкнули {count} человек(а)! ❤️',
+  NO_INCOMING_LIKES: 'Новых лайков пока нет. Возвращаемся в ленту.',
+  QUEUE_EMPTY: 'Вы просмотрели все входящие лайки. Возвращаемся в ленту.',
+  SUPERLIKE_EXHAUSTED: 'Суперлайки закончились. Новый будет доступен в понедельник. ⭐',
+  SUPERLIKE_LEFT: 'Осталось суперлайков: {count}',
+} as const;
