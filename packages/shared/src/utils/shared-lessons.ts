@@ -37,16 +37,13 @@ export function sharedGroupsFor(
 		.map((other) => ({
 			groupApiId: other.groupId!,
 			groupTitle: other.groupTitle ?? GroupTitleById[other.groupId!] ?? other.groupId!,
-			mode: other.classroomId === lesson.classroomId ? ('combined' as const) : ('parallel' as const),
+			mode:
+				other.classroomId === lesson.classroomId ? ('combined' as const) : ('parallel' as const),
 		}));
 }
 
 /** Проставляет `sharedWith` у пар группы по общему пулу. */
-export function annotateLessons(
-	lessons: Lesson[],
-	groupApiId: string,
-	pool: Lesson[],
-): Lesson[] {
+export function annotateLessons(lessons: Lesson[], groupApiId: string, pool: Lesson[]): Lesson[] {
 	const index = buildSharedIndex(pool);
 	return lessons.map((lesson) => {
 		const shared = sharedGroupsFor(lesson, groupApiId, index);

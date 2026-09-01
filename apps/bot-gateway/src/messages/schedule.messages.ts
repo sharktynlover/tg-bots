@@ -1,8 +1,9 @@
 import {
-	formatDate,
 	formatDayTitle,
 	formatDuration,
 	formatTime,
+	getWeekdayIndex,
+	WEEKDAYS,
 	type Lesson,
 	type ScheduleChange,
 	type SharedGroup,
@@ -29,10 +30,14 @@ function sharedLines(lesson: Lesson): string[] {
 	const parallel = shared.filter((item) => item.mode === 'parallel');
 	const lines: string[] = [];
 	if (combined.length > 0) {
-		lines.push(`🤝 Совмещённая с ${escapeHtml(combined.map((item) => item.groupTitle).join(', '))}`);
+		lines.push(
+			`🤝 Совмещённая с ${escapeHtml(combined.map((item) => item.groupTitle).join(', '))}`,
+		);
 	}
 	if (parallel.length > 0) {
-		lines.push(`↔️ Параллельно с ${escapeHtml(parallel.map((item) => item.groupTitle).join(', '))}`);
+		lines.push(
+			`↔️ Параллельно с ${escapeHtml(parallel.map((item) => item.groupTitle).join(', '))}`,
+		);
 	}
 	return lines;
 }
@@ -67,9 +72,10 @@ function lessonCompact(lesson: Lesson): string {
 	return `${formatTime(lesson.start)} ${escapeHtml(lesson.title)}${room}${subgroupSuffix(lesson)}${sharedShort(lesson)}`;
 }
 
-/** «Пн 01.09, 08:30» — когда и во сколько. */
+/** «Понедельник, 3 пара» — день недели и номер пары. */
 function slot(lesson: Lesson): string {
-	return `${formatDate(lesson.start)} ${formatTime(lesson.start)}`;
+	const weekday = WEEKDAYS[getWeekdayIndex(new Date(lesson.start))];
+	return `${weekday}, ${lesson.index} пара`;
 }
 
 function room(lesson: Lesson): string {

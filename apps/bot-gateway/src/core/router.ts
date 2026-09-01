@@ -12,16 +12,19 @@ type Controller = new (...args: any[]) => object;
 
 type Handler = (ctx: Context) => Promise<unknown>;
 
-function guard(name: string, adminOnly: boolean, access: string | undefined, run: Handler): Handler {
+function guard(
+	name: string,
+	adminOnly: boolean,
+	access: string | undefined,
+	run: Handler,
+): Handler {
 	return async (ctx) => {
 		if (adminOnly && !env.adminIds.includes(ctx.from?.id ?? 0)) {
 			await ctx.reply(Admin.denied());
 			return;
 		}
 		if (access) {
-			const allowed = await container
-				.resolve(AccessService)
-				.isAllowed(access, ctx.from?.id ?? 0);
+			const allowed = await container.resolve(AccessService).isAllowed(access, ctx.from?.id ?? 0);
 			if (!allowed) {
 				await ctx.reply(Admin.denied());
 				return;

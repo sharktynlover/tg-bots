@@ -25,15 +25,21 @@ const week = (lessons: Lesson[]): WeekSchedule => ({
 });
 
 const before = week([
-	lesson({ id: 1, start: '2026-09-01T03:30:00.000Z', title: 'Математика' }),
-	lesson({ id: 2, start: '2026-09-01T05:20:00.000Z', title: 'Физика' }),
-	lesson({ id: 3, start: '2026-09-01T07:10:00.000Z', title: 'История' }),
+	lesson({ id: 1, start: '2026-09-01T03:30:00.000Z', title: 'Математика', index: 1 }),
+	lesson({ id: 2, start: '2026-09-01T05:20:00.000Z', title: 'Физика', index: 2 }),
+	lesson({ id: 3, start: '2026-09-01T07:10:00.000Z', title: 'История', index: 3 }),
 ]);
 
 const after = week([
-	lesson({ id: 1, start: '2026-09-01T03:30:00.000Z', title: 'Математика', classroomName: '365' }),
-	lesson({ id: 2, start: '2026-09-01T09:00:00.000Z', title: 'Физика' }),
-	lesson({ id: 4, start: '2026-09-01T07:10:00.000Z', title: 'Информатика' }),
+	lesson({
+		id: 1,
+		start: '2026-09-01T03:30:00.000Z',
+		title: 'Математика',
+		index: 1,
+		classroomName: '365',
+	}),
+	lesson({ id: 2, start: '2026-09-01T09:00:00.000Z', title: 'Физика', index: 4 }),
+	lesson({ id: 4, start: '2026-09-01T07:10:00.000Z', title: 'Информатика', index: 3 }),
 ]);
 
 const changes = diffWeeks(before, after);

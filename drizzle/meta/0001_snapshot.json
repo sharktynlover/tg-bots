@@ -1,207 +1,202 @@
 {
-  "id": "9e9a2a1c-b5f4-43be-b845-b4037e24a296",
-  "prevId": "bfec38d8-b9a3-4e87-a2e1-dffea08485aa",
-  "version": "7",
-  "dialect": "postgresql",
-  "tables": {
-    "public.command_access": {
-      "name": "command_access",
-      "schema": "",
-      "columns": {
-        "command": {
-          "name": "command",
-          "type": "varchar(32)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "telegram_id": {
-          "name": "telegram_id",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "granted_by": {
-          "name": "granted_by",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "command_access_command_telegram_id_pk": {
-          "name": "command_access_command_telegram_id_pk",
-          "columns": [
-            "command",
-            "telegram_id"
-          ]
-        }
-      },
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.pre_schedule_cache": {
-      "name": "pre_schedule_cache",
-      "schema": "",
-      "columns": {
-        "group_api_id": {
-          "name": "group_api_id",
-          "type": "varchar(64)",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "raw_data_hash": {
-          "name": "raw_data_hash",
-          "type": "varchar(64)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "parsed_data": {
-          "name": "parsed_data",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "teacher_source_data": {
-          "name": "teacher_source_data",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "last_updated": {
-          "name": "last_updated",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.schedule_cache": {
-      "name": "schedule_cache",
-      "schema": "",
-      "columns": {
-        "group_api_id": {
-          "name": "group_api_id",
-          "type": "varchar(64)",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "raw_data_hash": {
-          "name": "raw_data_hash",
-          "type": "varchar(64)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "parsed_data": {
-          "name": "parsed_data",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "last_updated": {
-          "name": "last_updated",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.users": {
-      "name": "users",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "telegram_id": {
-          "name": "telegram_id",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "group_api_id": {
-          "name": "group_api_id",
-          "type": "varchar(64)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "reminder_offset": {
-          "name": "reminder_offset",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "default": 5
-        },
-        "schedule_format": {
-          "name": "schedule_format",
-          "type": "varchar(16)",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'detailed'"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "users_telegram_id_unique": {
-          "name": "users_telegram_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "telegram_id"
-          ]
-        }
-      },
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    }
-  },
-  "enums": {},
-  "schemas": {},
-  "sequences": {},
-  "roles": {},
-  "policies": {},
-  "views": {},
-  "_meta": {
-    "columns": {},
-    "schemas": {},
-    "tables": {}
-  }
+	"id": "9e9a2a1c-b5f4-43be-b845-b4037e24a296",
+	"prevId": "bfec38d8-b9a3-4e87-a2e1-dffea08485aa",
+	"version": "7",
+	"dialect": "postgresql",
+	"tables": {
+		"public.command_access": {
+			"name": "command_access",
+			"schema": "",
+			"columns": {
+				"command": {
+					"name": "command",
+					"type": "varchar(32)",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"telegram_id": {
+					"name": "telegram_id",
+					"type": "bigint",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"granted_by": {
+					"name": "granted_by",
+					"type": "bigint",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamp with time zone",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {
+				"command_access_command_telegram_id_pk": {
+					"name": "command_access_command_telegram_id_pk",
+					"columns": ["command", "telegram_id"]
+				}
+			},
+			"uniqueConstraints": {},
+			"policies": {},
+			"checkConstraints": {},
+			"isRLSEnabled": false
+		},
+		"public.pre_schedule_cache": {
+			"name": "pre_schedule_cache",
+			"schema": "",
+			"columns": {
+				"group_api_id": {
+					"name": "group_api_id",
+					"type": "varchar(64)",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"raw_data_hash": {
+					"name": "raw_data_hash",
+					"type": "varchar(64)",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"parsed_data": {
+					"name": "parsed_data",
+					"type": "jsonb",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"teacher_source_data": {
+					"name": "teacher_source_data",
+					"type": "jsonb",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"last_updated": {
+					"name": "last_updated",
+					"type": "timestamp with time zone",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"policies": {},
+			"checkConstraints": {},
+			"isRLSEnabled": false
+		},
+		"public.schedule_cache": {
+			"name": "schedule_cache",
+			"schema": "",
+			"columns": {
+				"group_api_id": {
+					"name": "group_api_id",
+					"type": "varchar(64)",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"raw_data_hash": {
+					"name": "raw_data_hash",
+					"type": "varchar(64)",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"parsed_data": {
+					"name": "parsed_data",
+					"type": "jsonb",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"last_updated": {
+					"name": "last_updated",
+					"type": "timestamp with time zone",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"policies": {},
+			"checkConstraints": {},
+			"isRLSEnabled": false
+		},
+		"public.users": {
+			"name": "users",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"telegram_id": {
+					"name": "telegram_id",
+					"type": "bigint",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"group_api_id": {
+					"name": "group_api_id",
+					"type": "varchar(64)",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"reminder_offset": {
+					"name": "reminder_offset",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": false,
+					"default": 5
+				},
+				"schedule_format": {
+					"name": "schedule_format",
+					"type": "varchar(16)",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "'detailed'"
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamp with time zone",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {
+				"users_telegram_id_unique": {
+					"name": "users_telegram_id_unique",
+					"nullsNotDistinct": false,
+					"columns": ["telegram_id"]
+				}
+			},
+			"policies": {},
+			"checkConstraints": {},
+			"isRLSEnabled": false
+		}
+	},
+	"enums": {},
+	"schemas": {},
+	"sequences": {},
+	"roles": {},
+	"policies": {},
+	"views": {},
+	"_meta": {
+		"columns": {},
+		"schemas": {},
+		"tables": {}
+	}
 }
