@@ -1,0 +1,13 @@
+# Инфраструктура для запуска сервисов на хосте (без контейнеров приложения).
+# Postgres и Redis берутся из уже запущенного стека другого бота, здесь только брокер.
+services:
+  rabbitmq:
+    image: rabbitmq:3-alpine
+    container_name: rasp-rabbit
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:5672:5672'
+    healthcheck:
+      test: ['CMD', 'rabbitmq-diagnostics', '-q', 'ping']
+      interval: 10s
+      retries: 10
